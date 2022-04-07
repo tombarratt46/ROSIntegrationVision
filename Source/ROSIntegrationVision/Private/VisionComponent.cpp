@@ -47,7 +47,12 @@ UseEngineFramerate(false),
 ServerPort(10000),
 FrameTime(1.0f / Framerate),
 TimePassed(0),
-ColorsUsed(0)
+ColorsUsed(0),
+CameraInfoTopic(TEXT("/unreal_ros/camera_info")),
+DepthTopic(TEXT("/unreal_ros/image_depth")),
+TFTopic(TEXT("/tf")),
+ImageTopic(TEXT("/unreal_ros/image_color"))
+
 {
     Priv = new PrivateData();
     FieldOfView = 90.0;
@@ -119,6 +124,10 @@ void UVisionComponent::InitializeComponent()
 void UVisionComponent::BeginPlay()
 {
   Super::BeginPlay();
+  CameraInfoPublisher = NewObject<UTopic>(UTopic::StaticClass());
+  DepthPublisher = NewObject<UTopic>(UTopic::StaticClass());
+  ImagePublisher = NewObject<UTopic>(UTopic::StaticClass());
+  TFPublisher = NewObject<UTopic>(UTopic::StaticClass());
     // Initializing buffers for reading images from the GPU
 	ImageColor.AddUninitialized(Width * Height);
 	ImageDepth.AddUninitialized(Width * Height);
@@ -162,17 +171,17 @@ void UVisionComponent::BeginPlay()
                       TEXT("tf2_msgs/TFMessage"));
 
 		CameraInfoPublisher->Init(rosinst->ROSIntegrationCore,
-                              TEXT("/unreal_ros/camera_info"),
+                              CameraInfoTopic,
                               TEXT("sensor_msgs/CameraInfo"));
 		CameraInfoPublisher->Advertise();
 
 		ImagePublisher->Init(rosinst->ROSIntegrationCore,
-                         TEXT("/unreal_ros/image_color"),
+                         ImageTopic,
                          TEXT("sensor_msgs/Image"));
 		ImagePublisher->Advertise();
 
 		DepthPublisher->Init(rosinst->ROSIntegrationCore,
-                         TEXT("/unreal_ros/image_depth"),
+                         DepthTopic,
                          TEXT("sensor_msgs/Image"));
 		DepthPublisher->Advertise();
 	}

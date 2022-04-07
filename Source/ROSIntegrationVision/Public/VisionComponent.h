@@ -36,7 +36,15 @@ public:
     bool UseEngineFramerate; 
   UPROPERTY(EditAnywhere, Category = "Vision Component")
     int32 ServerPort;
-    
+
+  UPROPERTY(EditAnywhere, Category = "Vision Component")
+      FString CameraInfoTopic;
+    UPROPERTY(EditAnywhere, Category = "Vision Component")
+      FString DepthTopic;
+  UPROPERTY(EditAnywhere, Category = "Vision Component")
+      FString ImageTopic;
+  UPROPERTY(EditAnywhere, Category = "Vision Component")
+      FString TFTopic;
   // The cameras for color, depth and objects;
   UPROPERTY(Transient, EditAnywhere, BlueprintReadWrite, Category = "Vision Component")
     USceneCaptureComponent2D * Color;
@@ -50,14 +58,10 @@ public:
   UPROPERTY(BlueprintReadWrite, Category = "Vision Component")
     FString ImageOpticalFrame = TEXT("/unreal_ros/image_optical_frame");
     
-  UPROPERTY(Transient, EditAnywhere, Category = "Vision Component")
-    UTopic * CameraInfoPublisher;
-  UPROPERTY(Transient, EditAnywhere, Category = "Vision Component")
-    UTopic * DepthPublisher;
-  UPROPERTY(Transient, EditAnywhere, Category = "Vision Component")
-   UTopic * ImagePublisher;
-  UPROPERTY(Transient, EditAnywhere, Category = "Vision Component")
-   UTopic * TFPublisher;
+  UTopic * CameraInfoPublisher;
+  UTopic * DepthPublisher;
+  UTopic * ImagePublisher;
+  UTopic * TFPublisher;
 
 protected:
   
